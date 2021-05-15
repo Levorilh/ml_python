@@ -1,6 +1,7 @@
 from ctypes import *
+from env import *
 
-dll_path = "C:/Users/ttres/Desktop/3A/S2/MachineLearning/ml_library/cmake-build-debug/ml_library.dll"
+dll_path = DLL_PATH
 mylib = cdll.LoadLibrary(dll_path)
 
 def wrap_function(lib, funcname, argtypes, restype):

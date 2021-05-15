@@ -32,6 +32,11 @@ def destroy_mlp_model(p_model):
 
     mylib.destroy_mlp_model(p_model)
 
+def destroy_mlp_prediction(prediction):
+    mylib.destroy_mlp_prediction.argtypes = [c_void_p]
+    mylib.destroy_mlp_prediction.restype = None
+
+    mylib.destroy_mlp_prediction(prediction)
 
 def as_C_array(dataset):
     arr_size = len(dataset)
