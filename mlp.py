@@ -23,9 +23,6 @@ def create_mlp_model(npl):
 
     p_model = mylib.create_mlp_model(npl, npl_length)
 
-    # pretty = np.ctypeslib.as_array(p_model, (npl_length,))
-    # print(pretty)
-
     return p_model
 
 
@@ -62,20 +59,16 @@ def train_classification_stochastic_gradient_backpropagation_mlp_model(p_model,
                                                                                          input_type,
                                                                                          c_int,
                                                                                          output_type,
-                                                                                         c_bool,
                                                                                          c_float,
                                                                                          c_int]
     mylib.train_classification_stochastic_gradient_backpropagation_mlp_model.restype = None
 
-    print("just before training")
     mylib.train_classification_stochastic_gradient_backpropagation_mlp_model(p_model,
                                                                              input_dataset,
                                                                              samples_count,
                                                                              output_dataset,
-                                                                             True,
                                                                              alpha,
                                                                              epochs)
-    print("just after training")
 
 
 def train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
@@ -95,20 +88,16 @@ def train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
                                                                                          input_type,
                                                                                          c_int,
                                                                                          output_type,
-                                                                                         c_bool,
                                                                                          c_float,
                                                                                          c_int]
     mylib.train_regression_stochastic_gradient_backpropagation_mlp_model.restype = None
 
-    print("just before training")
     mylib.train_classification_stochastic_gradient_backpropagation_mlp_model(p_model,
                                                                              input_dataset,
                                                                              samples_count,
                                                                              output_dataset,
-                                                                             False,
                                                                              alpha,
                                                                              epochs)
-    print("just after training")
 
 
 
@@ -136,3 +125,10 @@ def predict_mlp_model_regression(p_model, sample_input):
     predict_value = mylib.predict_mlp_model_regression(p_model, sample_input)
 
     return predict_value
+
+def init_random() :
+    mylib.init_random.argtypes = []
+    mylib.init_random.restype = None
+
+    mylib.init_random()
+
