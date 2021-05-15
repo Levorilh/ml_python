@@ -1,0 +1,138 @@
+import numpy as np
+from ctypes import *
+from settings import *
+
+
+class MLP(Structure):
+    _fields_ = [
+        ("d_length", c_int),
+        ("d", POINTER(c_float)),
+        ("X", POINTER(POINTER(c_float))),
+        ("deltas", POINTER(POINTER(c_float))),
+        ("W", POINTER(POINTER(POINTER(c_float))))
+    ]
+
+
+def create_mlp_model(npl):
+    #npl, npl_length = as_C_array(npl)
+    npl_length = len(npl)
+    npl = (c_int * npl_length)(*npl)
+
+    mylib.create_mlp_model.argtypes = [POINTER(c_int), c_int]
+    mylib.create_mlp_model.restype = c_void_p
+
+    p_model = mylib.create_mlp_model(npl, npl_length)
+
+    # pretty = np.ctypeslib.as_array(p_model, (npl_length,))
+    # print(pretty)
+
+    return p_model
+
+
+def destroy_mlp_model(p_model):
+    mylib.destroy_mlp_model.argtypes = [c_void_p]
+    mylib.destroy_mlp_model.restype = None
+
+    mylib.destroy_mlp_model(p_model)
+
+
+def as_C_array(dataset):
+    arr_size = len(dataset)
+
+    arr_type = c_float * arr_size
+    arr = arr_type(*dataset)
+
+    return arr, arr_type
+
+
+def train_classification_stochastic_gradient_backpropagation_mlp_model(p_model,
+                                                                       inputs,
+                                                                       outputs,
+                                                                       alpha=0.001,
+                                                                       epochs=10000):
+    samples_count = len(inputs)
+
+    X = np.array(inputs)
+    flattened_inputs = X.flatten()
+
+    input_dataset, input_type = as_C_array(flattened_inputs)
+    output_dataset, output_type = as_C_array(outputs)
+
+    mylib.train_classification_stochastic_gradient_backpropagation_mlp_model.argtypes = [c_void_p,
+                                                                                         input_type,
+                                                                                         c_int,
+                                                                                         output_type,
+                                                                                         c_bool,
+                                                                                         c_float,
+                                                                                         c_int]
+    mylib.train_classification_stochastic_gradient_backpropagation_mlp_model.restype = None
+
+    print("just before training")
+    mylib.train_classification_stochastic_gradient_backpropagation_mlp_model(p_model,
+                                                                             input_dataset,
+                                                                             samples_count,
+                                                                             output_dataset,
+                                                                             True,
+                                                                             alpha,
+                                                                             epochs)
+    print("just after training")
+
+
+def train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
+                                                                   inputs,
+                                                                   outputs,
+                                                                   alpha=0.001,
+                                                                   epochs=10000):
+    samples_count = len(inputs)
+
+    X = np.array(inputs)
+    flattened_inputs = X.flatten()
+
+    input_dataset, input_type = as_C_array(flattened_inputs)
+    output_dataset, output_type = as_C_array(outputs)
+
+    mylib.train_regression_stochastic_gradient_backpropagation_mlp_model.argtypes = [c_void_p,
+                                                                                         input_type,
+                                                                                         c_int,
+                                                                                         output_type,
+                                                                                         c_bool,
+                                                                                         c_float,
+                                                                                         c_int]
+    mylib.train_regression_stochastic_gradient_backpropagation_mlp_model.restype = None
+
+    print("just before training")
+    mylib.train_classification_stochastic_gradient_backpropagation_mlp_model(p_model,
+                                                                             input_dataset,
+                                                                             samples_count,
+                                                                             output_dataset,
+                                                                             False,
+                                                                             alpha,
+                                                                             epochs)
+    print("just after training")
+
+
+
+
+def predict_mlp_model_classification(p_model, sample_input):
+    sample_input, si_type = as_C_array(sample_input)
+
+    si_length = len(sample_input)
+
+    mylib.predict_mlp_model_classification.argtypes = [c_void_p, POINTER(si_type)]
+    mylib.predict_mlp_model_classification.restype = POINTER(c_float)
+
+    predict_value = mylib.predict_mlp_model_classification(p_model, sample_input)
+
+    res = np.ctypeslib.as_array(predict_value, (1,))
+    return res
+
+
+def predict_mlp_model_regression(p_model, sample_input):
+    sample_input, si_type = as_C_array(sample_input)
+
+    mylib.predict_mlp_model_regression.argtypes = [c_void_p, POINTER(si_type)]
+    mylib.predict_mlp_model_regression.restype = POINTER(c_float)
+
+    predict_value = mylib.predict_mlp_model_regression(p_model, sample_input)
+
+    return predict_value
