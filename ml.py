@@ -31,8 +31,6 @@ destroy_linear_model(p_model)
 print("before : ", test_before , "And after : " , test_after)
 """
 
-
-
 # TEST MLP
 
 inputs = [
@@ -43,12 +41,10 @@ inputs = [
 ]
 outputs = [
     -1,
-    -1,
     1,
+    -1,
     1
 ]
-
-
 
 npl = [2, 3, 1]
 p_model = create_mlp_model(npl)
@@ -81,7 +77,6 @@ destroy_mlp_prediction(test_after)
 test_after = predict_mlp_model_classification(p_model, [1, 0])
 print("test after:10", test_after)
 destroy_mlp_prediction(test_after)
-
 
 test_after = predict_mlp_model_classification(p_model, [-1, 0])
 print("test after:-10", test_after)
