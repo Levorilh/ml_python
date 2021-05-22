@@ -14,7 +14,7 @@ class MLP(Structure):
 
 
 def create_mlp_model(npl):
-    #npl, npl_length = as_C_array(npl)
+    # npl, npl_length = as_C_array(npl)
     npl_length = len(npl)
     npl = (c_int * npl_length)(*npl)
 
@@ -32,11 +32,17 @@ def destroy_mlp_model(p_model):
 
     mylib.destroy_mlp_model(p_model)
 
+
 def destroy_mlp_prediction(prediction):
-    mylib.destroy_mlp_prediction.argtypes = [c_void_p]
+    prediction_inputs, prediction_type = as_C_array(prediction)
+
+    mylib.destroy_mlp_prediction.argtypes = [POINTER(prediction_type)]
+    # TODO check C++ code
+    #
     mylib.destroy_mlp_prediction.restype = None
 
-    mylib.destroy_mlp_prediction(prediction)
+    mylib.destroy_mlp_prediction(prediction_inputs)
+
 
 def as_C_array(dataset):
     arr_size = len(dataset)
@@ -90,11 +96,11 @@ def train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
     output_dataset, output_type = as_C_array(outputs)
 
     mylib.train_regression_stochastic_gradient_backpropagation_mlp_model.argtypes = [c_void_p,
-                                                                                         input_type,
-                                                                                         c_int,
-                                                                                         output_type,
-                                                                                         c_float,
-                                                                                         c_int]
+                                                                                     input_type,
+                                                                                     c_int,
+                                                                                     output_type,
+                                                                                     c_float,
+                                                                                     c_int]
     mylib.train_regression_stochastic_gradient_backpropagation_mlp_model.restype = None
 
     mylib.train_classification_stochastic_gradient_backpropagation_mlp_model(p_model,
@@ -103,8 +109,6 @@ def train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
                                                                              output_dataset,
                                                                              alpha,
                                                                              epochs)
-
-
 
 
 def predict_mlp_model_classification(p_model, sample_input):
@@ -131,9 +135,9 @@ def predict_mlp_model_regression(p_model, sample_input):
 
     return predict_value
 
-def init_random() :
+
+def init_random():
     mylib.init_random.argtypes = []
     mylib.init_random.restype = None
 
     mylib.init_random()
-
