@@ -1,8 +1,9 @@
-# from linear import *
+from linear import *
 from mlp import *
 
 init_random()
 """
+
 # TEST LINEAR
 
 inputs = [
@@ -29,7 +30,7 @@ test_after = predict_linear_model_classif(p_model , model_dim , [7,7])
 destroy_linear_model(p_model)
 
 print("before : ", test_before , "And after : " , test_after)
-"""
+
 
 # TEST MLP
 
@@ -86,3 +87,4 @@ print("test after:21", test_after)
 destroy_mlp_prediction(test_after)
 
 destroy_mlp_model(p_model)
+"""

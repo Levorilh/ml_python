@@ -8,9 +8,9 @@ def create_linear_model(model_dim):
 
     p_model = mylib.create_linear_model(model_dim)
 
-    pretty = np.ctypeslib.as_array(p_model, (model_dim,))
+    #pretty = np.ctypeslib.as_array(p_model, (model_dim,))
 
-    print(pretty)
+    #print(pretty)
 
     return p_model
 
