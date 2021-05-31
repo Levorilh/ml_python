@@ -8,9 +8,8 @@ def create_linear_model(model_dim):
 
     p_model = mylib.create_linear_model(model_dim)
 
-    #pretty = np.ctypeslib.as_array(p_model, (model_dim,))
-
-    #print(pretty)
+    pretty = np.ctypeslib.as_array(p_model, (model_dim+1,))
+    print(pretty)
 
     return p_model
 
@@ -31,7 +30,7 @@ def as_C_array(dataset):
     return arr, arr_type
 
 
-def train_linear_model(p_model, model_dim, inputs, outputs, alpha=0.001, epochs=2500):
+def train_linear_model(p_model, model_dim, inputs, outputs, alpha=0.001, epochs=1000):
     input_dataset, input_type = as_C_array(inputs)
     output_dataset, output_type = as_C_array(outputs)
 
