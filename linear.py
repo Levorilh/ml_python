@@ -21,17 +21,21 @@ def destroy_linear_model(p_model):
     mylib.destroy_linear_model(p_model)
 
 
-def as_C_array(dataset):
+def as_C_array(dataset, datatype=c_float):
     arr_size = len(dataset)
 
-    arr_type = c_float * arr_size
+    arr_type = datatype * arr_size
     arr = arr_type(*dataset)
 
     return arr, arr_type
 
 
 def train_linear_model(p_model, model_dim, inputs, outputs, alpha=0.001, epochs=1000):
-    input_dataset, input_type = as_C_array(inputs)
+    if type(inputs) is list:
+        inputs = np.array(inputs)
+    inputs_flattened = inputs.flatten()
+
+    input_dataset, input_type = as_C_array(inputs_flattened)
     output_dataset, output_type = as_C_array(outputs)
 
     mylib.train_classification_rosenblatt_rule_linear_model.argtypes = [POINTER(c_float), c_int, input_type, c_int,

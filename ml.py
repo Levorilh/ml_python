@@ -1,37 +1,57 @@
 from linear import *
 from mlp import *
-
+import numpy as np
 init_random()
+
 """
-
 # TEST LINEAR
+test_before = []
 
-inputs = [
-    3, 4,
-    6, 5,
-    4, 7
-]
-outputs = [
+
+inputs = np.array([
+    [1, 1],
+    [2, 3],
+    [3, 3]
+])
+
+outputs = np.array([
     1,
-    1,
+    -1,
     -1
+])
+"""
+inputs = [
+                [3, 4],
+                [6, 5],
+                [4, 7],
+]
+
+outputs = [
+                1,
+                1,
+                -1,
 ]
 
 model_dim = 2
 
-p_model = create_linear_model(model_dim)
+errors = 0
 
-test_before = predict_linear_model_classif(p_model , model_dim , [7,7])
+for _ in range(50):
+    test_after = []
+    p_model = create_linear_model(model_dim)
 
-train_linear_model(p_model , model_dim , inputs , outputs)
+    train_linear_model(p_model, model_dim, inputs, outputs, alpha=0.001, epochs=10_000)
 
-test_after = predict_linear_model_classif(p_model , model_dim , [7,7])
+    for data, expected in zip(inputs, outputs):
+        out = predict_linear_model_classif(p_model, model_dim, data)
+        test_after.append(out)
+        if out != expected:
+            errors += 1
+    print(test_after)
+    destroy_linear_model(p_model)
 
-destroy_linear_model(p_model)
-
-print("before : ", test_before , "And after : " , test_after)
-
-
+print(f"errors: {errors}")
+"""
 # TEST MLP
 
 inputs = [
