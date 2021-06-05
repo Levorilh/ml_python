@@ -87,8 +87,6 @@ def train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
                                                                    outputs,
                                                                    alpha=0.001,
                                                                    epochs=10000):
-    samples_count = len(inputs)
-
     X = np.array(inputs)
     flattened_inputs = X.flatten()
 
@@ -103,12 +101,12 @@ def train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
                                                                                      c_int]
     mylib.train_regression_stochastic_gradient_backpropagation_mlp_model.restype = None
 
-    mylib.train_classification_stochastic_gradient_backpropagation_mlp_model(p_model,
-                                                                             input_dataset,
-                                                                             samples_count,
-                                                                             output_dataset,
-                                                                             alpha,
-                                                                             epochs)
+    mylib.train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
+                                                                         input_dataset,
+                                                                         len(inputs),
+                                                                         output_dataset,
+                                                                         alpha,
+                                                                         epochs)
 
 
 def predict_mlp_model_classification(p_model, sample_input):
