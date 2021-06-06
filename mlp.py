@@ -23,7 +23,7 @@ def create_mlp_model(npl):
 
     p_model = mylib.create_mlp_model(npl, npl_length)
 
-    return p_model
+    return p_model, npl[-1]
 
 
 def destroy_mlp_model(p_model):
@@ -109,17 +109,17 @@ def train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
                                                                          epochs)
 
 
-def predict_mlp_model_classification(p_model, sample_input):
+def predict_mlp_model_classification(p_model, last_layer_len, sample_input):
     sample_input, si_type = as_C_array(sample_input)
 
-    si_length = len(sample_input)
+    #si_length = len(sample_input)
 
     mylib.predict_mlp_model_classification.argtypes = [c_void_p, POINTER(si_type)]
     mylib.predict_mlp_model_classification.restype = POINTER(c_float)
 
     predict_value = mylib.predict_mlp_model_classification(p_model, sample_input)
 
-    res = np.ctypeslib.as_array(predict_value, (1,))
+    res = np.ctypeslib.as_array(predict_value, (last_layer_len,))
     return res
 
 
