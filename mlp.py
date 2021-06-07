@@ -109,7 +109,7 @@ def train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
                                                                          epochs)
 
 
-def predict_mlp_model_classification(p_model, last_layer_len, sample_input):
+def predict_mlp_model_classification(p_model, sample_input, last_layer_len=1):
     sample_input, si_type = as_C_array(sample_input)
 
     #si_length = len(sample_input)
