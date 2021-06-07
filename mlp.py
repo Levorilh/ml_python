@@ -112,7 +112,7 @@ def train_regression_stochastic_gradient_backpropagation_mlp_model(p_model,
 def predict_mlp_model_classification(p_model, sample_input, last_layer_len=1):
     sample_input, si_type = as_C_array(sample_input)
 
-    #si_length = len(sample_input)
+    # si_length = len(sample_input)
 
     mylib.predict_mlp_model_classification.argtypes = [c_void_p, POINTER(si_type)]
     mylib.predict_mlp_model_classification.restype = POINTER(c_float)
