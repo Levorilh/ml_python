@@ -5,65 +5,76 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {# <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" #}
-    {# integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous"> #}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-          integrity="undefined" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
     <title>IRLpwd</title>
 </head>
 <body>
-<div class="jumbotron text-center">
-    <h1>Projet Annuel 3A</h1>
-    <p>Reda Maizate, Nicolas Horville, Thomas Tresgots</p>
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <div class="row"></div>
+        <div class="row">
+            <a class="navbar-brand">Projet Annuel 3A</a>
+            <p>Reda Maizate, Nicolas Horville, Thomas Tresgots</p>
+        </div>
+        <div class="row"></div>
+        <div class="row"></div>
+
+    </div>
+</nav>
 
 <div class="container">
-    <div style=""> Classification des monuments Parisiens</div>
+    <div class="row">
+        <p>Classification des monuments Parisiens</p>
+    </div>
+
     <div class="row">
         <div class="col-sm-4">
             <h3>Votre image</h3>
             <input id="insert" type="file" accept="image/*" value="Sélectionner" class="mb-2">
-            <img id="preview" src="#" alt="your image" title="preview" class="d-none mt-2" width="350" />
-            <input id="test"   type="submit" value="Process" class="d-none mt-2">
+            <img id="preview" src="#" alt="your image" title="preview" class="d-none mt-2" width="350"/>
+            <input id="test" type="submit" value="Process" class="d-none mt-2">
         </div>
         <div class="col-sm-4"></div>
         <div class="col-sm-4" id="outputArea">
         </div>
     </div>
 </div>
+
+
 </body>
-{# <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" #}
-{# integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" #}
-{# crossorigin="anonymous"></script> #}
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="undefined"
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
         crossorigin="anonymous"></script>
+
 
 <script>
 
-    const MONUMENTS = ["Tour eiffel" , "Arc de Triomphe" , "Notre dame"];
-    $("#insert").on("change",function() {
+    const MONUMENTS = ["Tour eiffel", "Arc de Triomphe", "Notre dame"];
+    $("#insert").on("change", function () {
         const [file] = this.files;
         const $preview = $("#preview");
-        if(file){
-            $preview.attr("src" , URL.createObjectURL(file));
+        if (file) {
+            $preview.attr("src", URL.createObjectURL(file));
             $('#test').removeClass('d-none');
             $preview.removeClass('d-none');
 
-        }else{
+        } else {
 
             console.log('rien ne va');
 
         }
     });
 
-    $("#test").on("click", function (){
+    $("#test").on("click", function () {
 
         $.ajax({
             method: "POST",
             url: '/predict',
-            success: function (html){
+            success: function (html) {
                 $("#outputArea").html(html);
             }
         })
