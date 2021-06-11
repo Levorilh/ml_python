@@ -17,3 +17,7 @@ def predict_route():
 
     accuracy = 60 + random.random()*40
     return render_template('prediction.twig', className=className, accuracy=accuracy)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
