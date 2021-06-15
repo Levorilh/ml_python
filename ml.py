@@ -112,7 +112,7 @@ print("test after:21", test_after)
 
 destroy_mlp_model(p_model)
 """
-"""
+# """
 import numpy as np
 import os
 from PIL import Image
@@ -165,12 +165,10 @@ test_before = predict_mlp_model_classification(p_model, X_train[0], len_output_l
 
 print("Before training:", test_before)
 
-#train_classification_stochastic_gradient_backpropagation_mlp_model(p_model, X_train, y_train.flatten(), epochs=1000)
+train_classification_stochastic_gradient_backpropagation_mlp_model(p_model, X_train, y_train.flatten(), epochs=1000)
 
-#destroy_mlp_model(p_model)
+test_after = predict_mlp_model_classification(p_model, X_train[0], len_output_layer)
 
-
-#test_after = predict_mlp_model_classification(p_model, X_train[0], len_output_layer)
-
-#print("After training:", test_after)
-"""
+print("After training:", test_after)
+# """
+destroy_mlp_model(p_model)
