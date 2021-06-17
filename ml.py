@@ -112,7 +112,6 @@ print("test after:21", test_after)
 
 destroy_mlp_model(p_model)
 """
-
 """
 import numpy as np
 import os
