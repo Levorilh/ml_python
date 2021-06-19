@@ -13,9 +13,9 @@ def hello_world():
 
 @app.route("/predict", methods=["POST"])
 def predict_route():
-    className = MONUMENTS[random.randint(0, len(MONUMENTS)-1)]
+    className = MONUMENTS[random.randint(0, len(MONUMENTS) - 1)]
 
-    accuracy = 60 + random.random()*40
+    accuracy = 60 + random.random() * 40
     return render_template('prediction.twig', className=className, accuracy=accuracy)
 
 
