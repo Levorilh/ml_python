@@ -112,3 +112,86 @@ print("test after:21", test_after)
 
 destroy_mlp_model(p_model)
 """
+"""
+import numpy as np
+import os
+from PIL import Image
+
+IMG_SIZE = (8, 8)
+PATH = os.path.join("data_large/")
+TRAIN = os.path.join(PATH, "train")
+classes = os.listdir(TRAIN)
+print(classes)
+
+
+def import_images_and_assign_labels(folder, label, X, Y):
+    for file in os.listdir(folder):
+        image_path = os.path.join(folder, file)
+        im = Image.open(image_path)
+        im = im.resize((8, 8))
+        im = im.convert("RGB")
+        im_arr = np.array(im)
+        im_arr = np.reshape(im_arr, (8 * 8 * 3))
+        X.append(im_arr)
+        Y.append(label)
+
+
+def import_dataset():
+    X_train, y_train, X_valid, y_valid = [], [], [], []
+    labels = np.identity(len(os.listdir(TRAIN)))
+
+    for set_type in ["train", "valid"]:
+        for cl, lab in zip(classes, labels):
+            if set_type == "train":
+                X_set, y_set = X_train, y_train
+            else:
+                X_set, y_set = X_valid, y_valid
+
+            import_images_and_assign_labels(
+                os.path.join(PATH, set_type, cl),
+                lab,
+                X_set,
+                y_set
+            )
+
+    return (np.array(X_train) / 255.0, np.array(y_train)), \
+           (np.array(X_valid) / 255.0, np.array(y_valid))
+
+
+(X_train, y_train), (X_valid, y_valid) = import_dataset()
+
+input_dim = [len(X_train[0]), 64, 80, 8]
+
+print(input_dim)
+print(len(X_train))
+
+picture_test = np.random.randint(0, len(X_train))
+
+p_model, len_output_layer = create_mlp_model(input_dim)
+test_before = predict_mlp_model_classification(p_model, X_train[picture_test], len_output_layer)
+
+print("Before training:", test_before)
+
+train_classification_stochastic_gradient_backpropagation_mlp_model(p_model, X_train, y_train.flatten(), epochs=30000,
+                                                                   alpha=0.01)
+
+test_after = predict_mlp_model_classification(p_model, X_train[picture_test], len_output_layer)
+
+print("After training:", test_after)
+
+print("class index : ", np.argmax(test_after))
+print("class Expected :", np.argmax(y_train[picture_test]))
+
+print()
+print()
+print()
+
+picture_test = np.random.randint(0, len(X_train))
+test_after = predict_mlp_model_classification(p_model, X_train[picture_test], len_output_layer)
+
+print("After training:", test_after)
+
+print("class index : ", np.argmax(test_after))
+print("class Expected :", np.argmax(y_train[picture_test]))
+destroy_mlp_model(p_model)
+"""
