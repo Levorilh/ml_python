@@ -1,28 +1,24 @@
-<div class="container">
+{% import 'macros.twig' as macros %}
+
+<div class="container-fluid mt-4 pt-4">
     <div>
         <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseN" aria-expanded="false"
-                aria-controls="collapseN">
+                data-bs-target="#collapseModels" aria-expanded="false"
+                aria-controls="collapseModels">
             Liste des Modèles
         </button>
     </div>
 
 
-    <div class="collapse container-fluid" id="collapseN">
-        <div class="mt-4">
-            <button type="button" class="btn btn-primary">Modèle 1</button>
-        </div>
-
-        <div class="mt-4">
-            <button type="button" class="btn btn-primary">Modèle 1</button>
-        </div>
-
-        <div class="mt-4">
-            <button type="button" class="btn btn-primary">Modèle 1</button>
-        </div>
-
-        <div class="mt-4">
-            <button type="button" class="btn btn-primary">Modèle 1</button>
+    <div class="collapse container-fluid mt-4" id="collapseModels">
+        <div class="row">
+            {% for class, ids in modelIds.items() %}
+                {{ macros.listModels(class , ids) }}
+            {% endfor %}
         </div>
     </div>
+
+
+
+
 </div>
