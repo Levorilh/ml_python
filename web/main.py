@@ -21,6 +21,8 @@ def predict_route():
     className = MONUMENTS[random.randint(0, len(MONUMENTS) - 1)]
 
     accuracy = 60 + random.random() * 40
+
+    # TODO call predict with image + p_model from session.
     return render_template('prediction.twig', className=className, accuracy=accuracy)
 
 
@@ -28,7 +30,7 @@ def predict_route():
 def setModel_route():
     session['model'] = request.form["id"]
 
-    return "",201
+    return "", 201
 
 
 if __name__ == '__main__':
