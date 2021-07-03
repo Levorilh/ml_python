@@ -200,14 +200,13 @@ print("class Expected :", np.argmax(y_train[picture_test]))
 destroy_mlp_model(p_model)
 """
 
-p_model = create_linear_model(6)
+p_model = create_linear_model(1000)
 
-filename = "models/localfileTEST.model"
-save_linear_model(p_model, 6, filename)
+filename = "models/lastmodel.txt"
+save_linear_model(p_model, 1000, filename)
 
 try:
     p_model_size, p_model2 = load_linear_model(filename)
-
 
     print(p_model_size, np.ctypeslib.as_array(p_model2, (p_model_size,)))
 
