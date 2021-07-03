@@ -83,3 +83,28 @@ def predict_linear_model_regression(p_model, model_dim, dataset):
     predict_value = mylib.predict_linear_model_regression(p_model, model_dim, predict_dataset)
 
     return predict_value
+
+
+def save_linear_model(p_model, input_dim, filename):
+    mylib.save_linear_model.argtypes = [POINTER(c_float), c_int, c_char_p]
+    mylib.save_linear_model.restype = None
+
+    mylib.save_linear_model(p_model, input_dim, bytes(filename, 'utf-8'))
+
+
+def load_linear_model(filename):
+    p_input_dim = c_int()
+
+    mylib.load_linear_model.argtypes = [c_char_p, POINTER(c_int)]
+    mylib.load_linear_model.restype = POINTER(c_float)
+
+    p_model = mylib.load_linear_model(bytes(filename, 'utf-8'), p_input_dim)
+
+    if not p_model:
+        print("le modele n'a pas pu être créé")
+
+        raise ValueError()
+
+    return p_input_dim.value, p_model
+
+
