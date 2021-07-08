@@ -12,8 +12,8 @@
 
     <div class="collapse container-fluid mt-4" id="collapseModels">
         <div class="row">
-            {% for class, ids in modelIds.items() %}
-                {{ macros.listModels(class , ids) }}
+            {% for  modelName, modelFile in modelNames|zip(modelFiles.values()) %}
+                {{ macros.listModels(modelName , modelFile) }}
             {% endfor %}
         </div>
     </div>

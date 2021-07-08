@@ -39,12 +39,14 @@ $("#test").on("click", function () {
 
 $(".modelLoader").on("click", function () {
     console.log("touch me");
-    let modelId = $(this).data("id");
+    let modelId = $(this).data("file");
+    let modelType = $(this).data("modeltype");
     $.ajax({
         url: "/setModel",
         method: "POST",
         data: {
-            "id": modelId,
+            "file": modelId,
+            "type": modelType,
         },
         success: function (response, status) {
             console.log(response, status);
