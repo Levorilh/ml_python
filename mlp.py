@@ -34,14 +34,10 @@ def destroy_mlp_model(p_model):
 
 
 def destroy_mlp_prediction(prediction):
-    prediction_inputs, prediction_type = as_C_array(prediction)
-
-    mylib.destroy_mlp_prediction.argtypes = [POINTER(prediction_type)]
-    # TODO check C++ code
-    #
+    mylib.destroy_mlp_prediction.argtypes = [POINTER(c_float)]
     mylib.destroy_mlp_prediction.restype = None
 
-    mylib.destroy_mlp_prediction(prediction_inputs)
+    mylib.destroy_mlp_prediction(prediction)
 
 
 def as_C_array(dataset):
@@ -119,7 +115,10 @@ def predict_mlp_model_classification(p_model, sample_input, last_layer_len=1):
 
     predict_value = mylib.predict_mlp_model_classification(p_model, sample_input)
 
-    res = np.ctypeslib.as_array(predict_value, (last_layer_len,))
+    res = list(np.ctypeslib.as_array(predict_value, (last_layer_len,)))
+    destroy_mlp_prediction(predict_value)
+
+
     return res
 
 
@@ -139,3 +138,23 @@ def init_random():
     mylib.init_random.restype = None
 
     mylib.init_random()
+
+
+def load_mlp_model(filename):
+    mylib.load_mlp_model.argtypes = [c_char_p]
+    mylib.load_mlp_model.restype = c_void_p
+
+    p_model = mylib.load_mlp_model(bytes(filename, 'utf-8'))
+
+    if not p_model:
+        print("le modele n'a pas pu être créé")
+        raise ValueError()
+
+    return p_model
+
+
+def save_mlp_model(p_model, filename):
+    mylib.save_mlp_model.argtypes = [c_void_p, c_char_p]
+    mylib.save_mlp_model.restype = None
+
+    mylib.save_mlp_model(p_model, bytes(filename, 'utf-8'))

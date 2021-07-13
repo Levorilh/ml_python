@@ -198,7 +198,6 @@ print("After training:", test_after)
 print("class index : ", np.argmax(test_after))
 print("class Expected :", np.argmax(y_train[picture_test]))
 destroy_mlp_model(p_model)
-"""
 
 p_model = create_linear_model(1000)
 
@@ -215,3 +214,87 @@ try:
 
 except:
     print("aie")
+"""
+
+
+# input_dim = [2, 3, 4]
+# p_model = create_linear_model(8)
+#
+# filename = "models/lin/load.txt"
+# save_linear_model(p_model, 8, filename)
+#
+# try:
+#     p_model2, _ = load_linear_model(filename)
+#
+#     # before_save = predict_mlp_model_classification(p_model, [115.34, 111.22], 4)
+#     # after_load = predict_mlp_model_classification(p_model2, [1, 1], 4)
+#
+#     # print("Before:", before_save)
+#     # print("After:", after_load)
+#
+#     # destroy_mlp_prediction(before_save)
+#     # destroy_mlp_prediction(after_load)
+#     destroy_linear_model(p_model)
+#     destroy_linear_model(p_model2)
+# except Exception as e:
+#     print("Erreur:", e)
+
+def create_some_linear_models():
+    for i in range(15):
+        id = np.random.randint(1, 50)
+        filename = "models/lin/model" + str(id) + ".txt"
+
+        p_model = create_linear_model(id)
+
+        save_linear_model(p_model, id, filename)
+
+
+def create_some_mlp_models():
+    for i in range(15):
+        id = np.random.randint(1, 50)
+        filename = "models/mlp/model" + str(id) + ".txt"
+
+        layers = [np.random.randint(2, 7) for _ in range(np.random.randint(3, 6))]
+        # print(layers)
+        p_model, _ = create_mlp_model(layers)
+
+        save_mlp_model(p_model, filename)
+
+
+# create_some_mlp_models()
+
+# p_model2 = load_mlp_model("models/mlp/model3.txt")
+#
+# save_mlp_model(p_model2, "models/mlp/model3bis.txt")
+# print("no soucis")
+#
+
+p_model, last_layer = create_mlp_model([3, 3, 2])
+arr = predict_mlp_model_classification(p_model, [1, 1], last_layer)
+print("1 : ", arr)
+arr = predict_mlp_model_classification(p_model, [1, 1], last_layer)
+print("1-2 : ", arr)
+arr = predict_mlp_model_classification(p_model, [1, 1], last_layer)
+print("1-3 : ", arr)
+
+save_mlp_model(p_model, "models/mlp/test.txt")
+destroy_mlp_model(p_model)
+
+p_model2 = load_mlp_model("models/mlp/test.txt")
+arr2 = predict_mlp_model_classification(p_model2, [1, 1], last_layer)
+print("2 : ", arr2)
+
+arr2 = predict_mlp_model_classification(p_model2, [1, 1], last_layer)
+print("2-2 : ", arr2)
+
+arr2 = predict_mlp_model_classification(p_model2, [1, 1], last_layer)
+print("2-3 : ", arr2)
+
+save_mlp_model(p_model2, "models/mlp/reda_test.txt")
+destroy_mlp_model(p_model2)
+
+p_model3 = load_mlp_model("models/mlp/reda_test.txt")
+arr3 = predict_mlp_model_classification(p_model3, [1, 1], last_layer)
+print("3 : ", arr2)
+save_mlp_model(p_model3, "models/mlp/reda_test_bis.txt")
+destroy_mlp_model(p_model3)

@@ -1,14 +1,14 @@
-{% macro listModels(class , modelIds) %}
+{% macro listModels(modelName , modelFiles) %}
     <div class="col-2">
         <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapse{{ class }}" aria-expanded="false" aria-controls="collapse{{ class }}">Modèles
-            {{ class }}
+                data-bs-target="#collapse{{ modelName }}" aria-expanded="false" aria-controls="collapse{{ modelName }}">Modèles
+            {{ modelName }}
         </button>
 
-        <div class="collapse container-fluid" id="collapse{{ class }}">
-            {% for modelId in modelIds %}
+        <div class="collapse container-fluid" id="collapse{{ modelName }}">
+            {% for file in modelFiles %}
                 <div class="mt-4">
-                    <button type="button" class="btn btn-primary modelLoader" data-id="{{ modelId }}">Modèle {{ modelId }}</button>
+                    <button type="button" class="btn btn-primary modelLoader" data-file="{{ file }}" data-modeltype="{{ modelName }}">Modèle {{ loop.index }}</button>
                 </div>
             {% endfor %}
         </div>
