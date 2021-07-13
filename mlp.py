@@ -34,14 +34,10 @@ def destroy_mlp_model(p_model):
 
 
 def destroy_mlp_prediction(prediction):
-    prediction_inputs, prediction_type = as_C_array(prediction)
-
     mylib.destroy_mlp_prediction.argtypes = [POINTER(c_float)]
-    # TODO check C++ code
-    #
     mylib.destroy_mlp_prediction.restype = None
 
-    mylib.destroy_mlp_prediction(prediction_inputs)
+    mylib.destroy_mlp_prediction(prediction)
 
 
 def as_C_array(dataset):
@@ -119,8 +115,10 @@ def predict_mlp_model_classification(p_model, sample_input, last_layer_len=1):
 
     predict_value = mylib.predict_mlp_model_classification(p_model, sample_input)
 
-    res = np.ctypeslib.as_array(predict_value, (last_layer_len,))
-    # todo return predict_value instead of as_array
+    res = list(np.ctypeslib.as_array(predict_value, (last_layer_len,)))
+    destroy_mlp_prediction(predict_value)
+
+
     return res
 
 
