@@ -19,24 +19,6 @@ $("#insert").on("change", function () {
     }
 });
 
-$("#test").on("click", function () {
-    if (app.hasModel) {
-        $.ajax({
-            method: "POST",
-            url: '/predict',
-            success: function (html) {
-                $("#outputArea").html(html);
-            }
-        });
-    }
-    else{
-        window.alert("Vous devez d'abord charger un modèle");
-    }
-
-    // let result_class = Math.round(Math.random()*MONUMENTS.length);
-    // let result_precision = (Math.random()*100).toPrecision(4);
-});
-
 $(".modelLoader").on("click", function () {
     console.log("touch me");
     let modelId = $(this).data("file");
@@ -59,3 +41,12 @@ $(".modelLoader").on("click", function () {
         },
     })
 });
+
+
+function checkInputs(){
+    if (app.hasModel) {
+        return true;
+    }
+    window.alert("Vous devez d'abord charger un modèle");
+    return false;
+}

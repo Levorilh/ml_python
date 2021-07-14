@@ -269,32 +269,12 @@ def create_some_mlp_models():
 # print("no soucis")
 #
 
-p_model, last_layer = create_mlp_model([3, 3, 2])
-arr = predict_mlp_model_classification(p_model, [1, 1], last_layer)
-print("1 : ", arr)
-arr = predict_mlp_model_classification(p_model, [1, 1], last_layer)
-print("1-2 : ", arr)
-arr = predict_mlp_model_classification(p_model, [1, 1], last_layer)
-print("1-3 : ", arr)
 
-save_mlp_model(p_model, "models/mlp/test.txt")
-destroy_mlp_model(p_model)
+id = np.random.randint(1, 50)
+filename = "models/mlp/model" + str(id) + ".txt"
 
-p_model2 = load_mlp_model("models/mlp/test.txt")
-arr2 = predict_mlp_model_classification(p_model2, [1, 1], last_layer)
-print("2 : ", arr2)
+layers = [np.random.randint(2, 7) for _ in range(np.random.randint(3, 6))]
+# print(layers)
+p_model, _ = create_mlp_model(layers)
 
-arr2 = predict_mlp_model_classification(p_model2, [1, 1], last_layer)
-print("2-2 : ", arr2)
-
-arr2 = predict_mlp_model_classification(p_model2, [1, 1], last_layer)
-print("2-3 : ", arr2)
-
-save_mlp_model(p_model2, "models/mlp/reda_test.txt")
-destroy_mlp_model(p_model2)
-
-p_model3 = load_mlp_model("models/mlp/reda_test.txt")
-arr3 = predict_mlp_model_classification(p_model3, [1, 1], last_layer)
-print("3 : ", arr2)
-save_mlp_model(p_model3, "models/mlp/reda_test_bis.txt")
-destroy_mlp_model(p_model3)
+save_mlp_model(p_model, filename)

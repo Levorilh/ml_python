@@ -1,7 +1,9 @@
 import os
 from pathlib import Path
 
-from flask import Flask, render_template, session, request
+from PIL import Image
+
+from flask import Flask, render_template, session, request, redirect
 import random
 
 from numpy import shape
@@ -13,7 +15,8 @@ import numpy as np
 
 app = Flask(__name__)
 
-MONUMENTS = ["Tour eiffel", "Arc de Triomphe", "Notre dame", "Inconnu"]
+MONUMENTS = ["Arc de Triomphe", "Hotel de ville", "Jardin des tuileries", "Moulin Rouge", "Musee d'Orsay",
+             "Palais de l'Elysée", "Place de la concorde", "pont-neuf", "Inconnu"]
 MODELS_FILENAMES = {
     'mlp': [],
     'lin': [],
@@ -23,16 +26,21 @@ dir_models = os.getcwd() + "/../models/"
 
 
 @app.route("/")
-def hello_world():
-    return render_template('home.twig', modelFiles=MODELS_FILENAMES, modelNames=['PMC', 'Linéaires'])
+def hello_world(predict=None):
+    return render_template('home.twig', modelFiles=MODELS_FILENAMES, modelNames=['PMC', 'Linéaires'], predict=predict)
 
 
-@app.route("/predict", methods=["POST"])
+@app.route("/predict", methods=["GET","POST"])
 def predict_route():
     accuracy = 60 + random.random() * 40
 
     print(request.files)
-    data = np.array(request.files['file']).flatten()
+    image = request.files.get('image')
+    print("bonsoirrrrrrrrrrrr ", image)
+    img = Image.open(image)
+    print("bonjour", img)
+
+    # data = np.array(request.files['file']).flatten()
 
     # if session['modeltype'] == "Linéaires":
     #     model_prediction = predict_linear_model_classif(p_model_curr, session['modelSize'], data)
@@ -42,7 +50,7 @@ def predict_route():
     # print(model_prediction)
     className = "oui"
     # TODO call predict with image + p_model from session.
-    return render_template('prediction.twig', className=className, accuracy=accuracy)
+    return hello_world(render_template('prediction.twig', className=className, accuracy=accuracy))
 
 
 @app.route("/setModel", methods=["POST"])
