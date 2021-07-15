@@ -1,10 +1,13 @@
+import datetime
 import os
 from pathlib import Path
 
 from flask import Flask, render_template, session, request
 import random
+from PIL import Image
 
 from numpy import shape
+from werkzeug.utils import secure_filename
 
 from loadModels import loadModels
 from mlp import load_mlp_model, predict_mlp_model_classification, destroy_mlp_model
@@ -18,8 +21,37 @@ MODELS_FILENAMES = {
     'mlp': [],
     'lin': [],
 }
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_URL = "static/images/"
+app.config["UPLOAD_URL"] = UPLOAD_URL
+UPLOAD_ROOT = os.path.join(BASE_DIR, "static/images")
+app.config["UPLOAD_ROOT"] = UPLOAD_ROOT
+
 p_model_curr = None
 dir_models = os.getcwd() + "/../models/"
+
+
+@app.route("/index")
+def index():
+    return render_template("index.html", image="https://www.francetourisme.fr/images/musees_expositions.jpg",
+                           prediction_score=None, labels=None, scores=None, prediction_label=None)
+
+
+@app.route("/predictImage", methods=["GET", "POST"])
+def predictImage():
+    f = request.files["filePath"]
+    fs = secure_filename(f.filename)
+    f.save(os.path.join(app.config["UPLOAD_ROOT"], fs))
+    image = str(os.path.join(app.config["UPLOAD_URL"], f.filename))
+    img = Image.open(image)
+    im_re = img.resize((8, 8))
+    a = np.asarray(im_re)
+    a_fl = a.flatten() / 255.
+    print(a_fl)
+    print(len(a_fl))
+
+    return render_template("index.html", image=image)
 
 
 @app.route("/")
@@ -59,7 +91,7 @@ def setModel_route():
 
 
 if __name__ == '__main__':
-    loadModels(MODELS_FILENAMES)
+    # loadModels(MODELS_FILENAMES)
 
     app.secret_key = "3A-IABD2"
 
