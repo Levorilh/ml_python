@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Monuments Recognition</title>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Tooplate">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+
+</head>
+
+<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+<div class="container">
+    <div class="row">
+        <div class="text-center" id="title">
+            <h2>Deep Learning to predict parisian monuments.</h2>
+        </div>
+    </div>
+
+
+    <div class="container" id="Container1">
+        <div class="row mb-4 pb-4"></div>
+        <div class="row mb-4 pb-4"></div>
+        <div class="row">
+            <div class="col">
+
+                <div class="col-sm-5 text-center d-flex align-items-center" id="FileUpload">
+
+                    <form method="post" enctype="multipart/form-data" action="predictImage">
+                        <label>Upload your monument</label>
+
+                        <div class="d-flex align-items-center">
+                            <div class="input-group" style="margin:auto;">
+                                <input class="btn btn-secondary" name="filePath" type="file">
+                            </div>
+                        </div>
+
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+            <div class="col">
+
+                <div class="col-sm-5 text-center" id="Submit">
+                    {% if scores is not none %}
+                        <p><strong>The monument in your file is: {{ prediction_label }}</strong></p>
+                        <img src={{ image }} height='250px'>
+                        <br>
+                        <p><strong>Prediction accuracy: {{ prediction_score }}%</strong></p>
+                        <p><i>Labels available: {{ labels }}</i></p>
+                        <p><i>Scores: {{ scores }}</i></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <footer class="mastfoot mt-auto">
+        <div class="inner">
+            <p><i>Made by Thomas Tresgots, Réda Maizate and Nicolas Horville</i></p>
+        </div>
+    </footer>
+</div>
+
+
+<!-- SCRIPTS -->
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+
+<script type="text/javascript" src="{{ url_for('static', filename='js.js') }}"></script>
+</html>
