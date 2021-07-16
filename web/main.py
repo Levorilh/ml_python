@@ -45,7 +45,7 @@ dir_models = os.getcwd() + "/../models/"
 @app.route("/index")
 def index():
     return render_template("index.html", image="https://www.francetourisme.fr/images/musees_expositions.jpg",
-                           prediction_score=None, labels=None, scores=None, prediction_label=None)
+                           prediction_score=50, labels=MONUMENTS, scores=[0, 0, 1, 0, 0, 0, 0, 0], prediction_label="pont-neuf")
 
 
 @app.route("/predictImage", methods=["GET", "POST"])
@@ -67,7 +67,7 @@ def predictImage():
                            prediction_label=MONUMENTS[np.argmax(predictions)],
                            scores=predictions,
                            labels=MONUMENTS,
-                           prediction_score=round(predictions[np.argmax(predictions)], 2)
+                           prediction_score=round(predictions[np.argmax(predictions)] * 100, 2)
                            )
 
 
