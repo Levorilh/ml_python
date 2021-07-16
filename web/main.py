@@ -6,6 +6,9 @@ from flask import Flask, render_template, session, request
 import random
 from PIL import Image
 
+import urllib3
+urllib3.disable_warnings()
+
 from numpy import shape
 from werkzeug.utils import secure_filename
 
@@ -16,7 +19,14 @@ import numpy as np
 
 app = Flask(__name__)
 
-MONUMENTS = ["Tour eiffel", "Arc de Triomphe", "Notre dame", "Inconnu"]
+MONUMENTS = ['moulin-rouge',
+ 'palais-de-l-elysee',
+ 'pont-neuf',
+ 'place-de-la-concorde',
+ 'jardin-des-tuileries',
+ 'hotel-de-ville',
+ 'arc-de-triomphe',
+ 'musee-d-orsay']
 MODELS_FILENAMES = {
     'mlp': [],
     'lin': [],
@@ -48,10 +58,17 @@ def predictImage():
     im_re = img.resize((8, 8))
     a = np.asarray(im_re)
     a_fl = a.flatten() / 255.
-    print(a_fl)
-    print(len(a_fl))
 
-    return render_template("index.html", image=image)
+    model = load_mlp_model("../models/mlp/MLP_50000_8x8_8_t_acc-34.56_v_acc-32.36.txt")
+    predictions = predict_mlp_model_classification(model, a_fl, 8)
+    print(predictions)
+    return render_template("index.html",
+                           image=image,
+                           prediction_label=MONUMENTS[np.argmax(predictions)],
+                           scores=predictions,
+                           labels=MONUMENTS,
+                           prediction_score=round(predictions[np.argmax(predictions)], 2)
+                           )
 
 
 @app.route("/")
