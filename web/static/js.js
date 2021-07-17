@@ -19,26 +19,7 @@ $("#insert").on("change", function () {
     }
 });
 
-$("#test").on("click", function () {
-    if (app.hasModel) {
-        $.ajax({
-            method: "POST",
-            url: '/predict',
-            success: function (html) {
-                $("#outputArea").html(html);
-            }
-        });
-    }
-    else{
-        window.alert("Vous devez d'abord charger un modèle");
-    }
-
-    // let result_class = Math.round(Math.random()*MONUMENTS.length);
-    // let result_precision = (Math.random()*100).toPrecision(4);
-});
-
 $(".modelLoader").on("click", function () {
-    console.log("touch me");
     let modelId = $(this).data("file");
     let modelType = $(this).data("modeltype");
     $.ajax({
@@ -49,13 +30,20 @@ $(".modelLoader").on("click", function () {
             "type": modelType,
         },
         success: function (response, status) {
-            console.log(response, status);
             if (status === "success") {
                 window.alert("Le modèle " + modelId + " a été chargé");
                 app.hasModel = true;
                 app.modelId = modelId;
-                // console.log("Le modèle " + modelId + " a été chargé")
             }
         },
     })
 });
+
+
+function checkInputs(){
+    if (app.hasModel) {
+        return true;
+    }
+    window.alert("Vous devez d'abord charger un modèle");
+    return false;
+}

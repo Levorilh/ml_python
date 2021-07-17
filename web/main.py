@@ -2,7 +2,9 @@ import datetime
 import os
 from pathlib import Path
 
-from flask import Flask, render_template, session, request
+from PIL import Image
+
+from flask import Flask, render_template, session, request, redirect
 import random
 from PIL import Image
 
@@ -13,7 +15,7 @@ from numpy import shape
 from werkzeug.utils import secure_filename
 
 from loadModels import loadModels
-from mlp import load_mlp_model, predict_mlp_model_classification, destroy_mlp_model
+from mlp import load_mlp_model, predict_mlp_model_classification, destroy_mlp_model, create_mlp_model
 from linear import load_linear_model, predict_linear_model_classif, destroy_linear_model
 import numpy as np
 
@@ -27,10 +29,12 @@ MONUMENTS = ['moulin-rouge',
  'hotel-de-ville',
  'arc-de-triomphe',
  'musee-d-orsay']
+
 MODELS_FILENAMES = {
     'mlp': [],
     'lin': [],
 }
+MODEL_NAMES = ["PMC", "Linéaires"]
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_URL = "static/images/"
@@ -42,10 +46,12 @@ p_model_curr = None
 dir_models = os.getcwd() + "/../models/"
 
 
-@app.route("/index")
+@app.route("/")
 def index():
-    return render_template("index.html", image="https://www.francetourisme.fr/images/musees_expositions.jpg",
-                           prediction_score=50, labels=MONUMENTS, scores=[0, 0, 1, 0, 0, 0, 0, 0], prediction_label="pont-neuf")
+    loadModels(MODELS_FILENAMES)
+    print(MODELS_FILENAMES)
+    return render_template("index.twig", image="https://www.francetourisme.fr/images/musees_expositions.jpg",
+                           modelFiles=MODELS_FILENAMES, modelNames=MODEL_NAMES)
 
 
 @app.route("/predictImage", methods=["GET", "POST"])
@@ -58,40 +64,17 @@ def predictImage():
     im_re = img.resize((8, 8))
     a = np.asarray(im_re)
     a_fl = a.flatten() / 255.
+    # print(a_fl)
+    # print(len(a_fl))
 
-    model = load_mlp_model("../models/mlp/MLP_50000_8x8_8_t_acc-34.56_v_acc-32.36.txt")
-    predictions = predict_mlp_model_classification(model, a_fl, 8)
-    print(predictions)
-    return render_template("index.html",
-                           image=image,
-                           prediction_label=MONUMENTS[np.argmax(predictions)],
-                           scores=predictions,
-                           labels=MONUMENTS,
-                           prediction_score=round(predictions[np.argmax(predictions)] * 100, 2)
-                           )
+    if session.get('modeltype') == "Linéaires":
+        pred = predict_linear_model_classif(p_model_curr, session.get("modelSize"), a_fl)
+    else:
+        pred = predict_mlp_model_classification(p_model_curr, a_fl, len(MONUMENTS) - 1)
 
+    print(pred)
 
-@app.route("/")
-def hello_world():
-    return render_template('home.twig', modelFiles=MODELS_FILENAMES, modelNames=['PMC', 'Linéaires'])
-
-
-@app.route("/predict", methods=["POST"])
-def predict_route():
-    accuracy = 60 + random.random() * 40
-
-    print(request.files)
-    data = np.array(request.files['file']).flatten()
-
-    # if session['modeltype'] == "Linéaires":
-    #     model_prediction = predict_linear_model_classif(p_model_curr, session['modelSize'], data)
-    # else:
-    #     model_prediction = predict_mlp_model_classification(p_model_curr, data, 8)
-
-    # print(model_prediction)
-    className = "oui"
-    # TODO call predict with image + p_model from session.
-    return render_template('prediction.twig', className=className, accuracy=accuracy)
+    return render_template("index.twig", image=image, modelFiles=MODELS_FILENAMES, modelNames=MODEL_NAMES)
 
 
 @app.route("/setModel", methods=["POST"])
@@ -103,14 +86,14 @@ def setModel_route():
         session['modelSize'], p_model_curr = load_linear_model(dir_models + "lin/" + request.form["file"])
     else:
         p_model_curr = load_mlp_model(dir_models + "mlp/" + request.form["file"])
+    print(p_model_curr)
+
 
     return "", 201
 
 
 if __name__ == '__main__':
-    # loadModels(MODELS_FILENAMES)
-
     app.secret_key = "3A-IABD2"
-
     app.jinja_env.filters['zip'] = zip
+
     app.run(debug=True)
