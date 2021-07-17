@@ -8,6 +8,9 @@ from flask import Flask, render_template, session, request, redirect
 import random
 from PIL import Image
 
+import urllib3
+urllib3.disable_warnings()
+
 from numpy import shape
 from werkzeug.utils import secure_filename
 
@@ -18,8 +21,14 @@ import numpy as np
 
 app = Flask(__name__)
 
-MONUMENTS = ["Arc de Triomphe", "Hotel de ville", "Jardin des tuileries", "Moulin Rouge", "Musee d'Orsay",
-             "Palais de l'Elysée", "Place de la concorde", "pont-neuf", "Inconnu"]
+MONUMENTS = ['moulin-rouge',
+ 'palais-de-l-elysee',
+ 'pont-neuf',
+ 'place-de-la-concorde',
+ 'jardin-des-tuileries',
+ 'hotel-de-ville',
+ 'arc-de-triomphe',
+ 'musee-d-orsay']
 
 MODELS_FILENAMES = {
     'mlp': [],
@@ -33,7 +42,7 @@ app.config["UPLOAD_URL"] = UPLOAD_URL
 UPLOAD_ROOT = os.path.join(BASE_DIR, "static/images")
 app.config["UPLOAD_ROOT"] = UPLOAD_ROOT
 
-p_model_curr, _ = create_mlp_model([192, 5, 8])
+p_model_curr = None
 dir_models = os.getcwd() + "/../models/"
 
 
@@ -72,13 +81,13 @@ def predictImage():
 def setModel_route():
     session['modeltype'] = request.form["type"]
 
-    # if session['modeltype'] == "Linéaires":
-    #     # session['modelSize'], session['model'] = load_linear_model(curr_dir / 'lin' / request.form["file"])
-    #     # session['modelSize'], p_model_curr = load_linear_model(dir_models + "lin/" + request.form["file"])
-    # else:
-        # p_model_curr = load_mlp_model(dir_models + "mlp/" + request.form["file"])
-
+    if request.form["type"] == "Linéaires":
+        # session['modelSize'], session['model'] = load_linear_model(curr_dir / 'lin' / request.form["file"])
+        session['modelSize'], p_model_curr = load_linear_model(dir_models + "lin/" + request.form["file"])
+    else:
+        p_model_curr = load_mlp_model(dir_models + "mlp/" + request.form["file"])
     print(p_model_curr)
+
 
     return "", 201
 
