@@ -20,7 +20,6 @@ $("#insert").on("change", function () {
 });
 
 $(".modelLoader").on("click", function () {
-    console.log("touch me");
     let modelId = $(this).data("file");
     let modelType = $(this).data("modeltype");
     $.ajax({
@@ -31,12 +30,10 @@ $(".modelLoader").on("click", function () {
             "type": modelType,
         },
         success: function (response, status) {
-            console.log(response, status);
             if (status === "success") {
                 window.alert("Le modèle " + modelId + " a été chargé");
                 app.hasModel = true;
                 app.modelId = modelId;
-                // console.log("Le modèle " + modelId + " a été chargé")
             }
         },
     })
