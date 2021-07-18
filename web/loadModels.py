@@ -8,5 +8,5 @@ def loadModels(dictionnary):
     for dir_ in models_dir.iterdir():
         if dir_.is_dir():
             for subFile in dir_.iterdir():
-                if not subFile.is_dir():
+                if subFile.is_file() and subFile.name != ".DS_Store":
                     dictionnary[dir_.name].append(subFile.name)

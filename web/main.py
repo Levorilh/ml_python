@@ -1,5 +1,4 @@
 import os
-import urllib3
 from PIL import Image
 from flask import Flask, render_template, session, request
 from werkzeug.utils import secure_filename
@@ -7,8 +6,6 @@ from loadModels import loadModels
 from mlp import *
 from linear import *
 import numpy as np
-
-urllib3.disable_warnings()
 
 app = Flask(__name__)
 
