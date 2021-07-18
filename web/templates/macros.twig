@@ -8,7 +8,7 @@
         <div class="collapse container-fluid" id="collapse{{ modelName }}">
             {% for file in modelFiles %}
                 <div class="mt-4">
-                    <button type="button" class="btn btn-primary modelLoader" data-file="{{ file }}" data-modeltype="{{ modelName }}">Modèle {{ loop.index }}</button>
+                    <button type="button" class="btn btn-primary modelLoader" data-file="{{ file }}" data-modeltype="{{ modelName }}" title="Qualité : 80%">Modèle {{ loop.index }}</button>
                 </div>
             {% endfor %}
         </div>
