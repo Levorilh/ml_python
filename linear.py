@@ -66,7 +66,7 @@ def train_linear_regression_model(p_model, model_dim, inputs, outputs):
 def predict_linear_model_classif(p_model, model_dim, dataset):
     predict_dataset, predict_type = as_C_array(dataset)
 
-    mylib.predict_linear_model_classification.argtypes = [POINTER(c_float), c_int, predict_type]
+    mylib.predict_linear_model_classification.argtypes = [c_void_p, c_int, predict_type]
     mylib.predict_linear_model_classification.restype = c_float
 
     predict_value = mylib.predict_linear_model_classification(p_model, model_dim, predict_dataset)
@@ -96,7 +96,7 @@ def load_linear_model(filename):
     p_input_dim = c_int()
 
     mylib.load_linear_model.argtypes = [c_char_p, POINTER(c_int)]
-    mylib.load_linear_model.restype = POINTER(c_float)
+    mylib.load_linear_model.restype = c_void_p
 
     p_model = mylib.load_linear_model(bytes(filename, 'utf-8'), p_input_dim)
 
@@ -104,7 +104,4 @@ def load_linear_model(filename):
         print("le modele n'a pas pu être créé")
 
         raise ValueError()
-
     return p_input_dim.value, p_model
-
-

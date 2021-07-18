@@ -1,3 +1,12 @@
-body {
-    background-color: rgba(210, 204, 246, 0.65);
+.banniere {
+    /*background-color: #D69422;*/
+    border-radius: 0 10% 10% 0;
+    margin-left: 0;
+    height: 300px;
+    box-shadow: black;
+    background-image: linear-gradient(to right, #D69422 35%, rgba(214, 148, 34, 0.3));
+}
+
+.title {
+    text-decoration: underline black;
 }
