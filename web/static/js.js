@@ -1,6 +1,6 @@
 let app = {
     hasModel: false,
-    modelId : null,
+    modelId: null,
 };
 
 const MONUMENTS = ["Tour eiffel", "Arc de Triomphe", "Notre dame"];
@@ -40,10 +40,17 @@ $(".modelLoader").on("click", function () {
 });
 
 
-function checkInputs(){
-    if (app.hasModel) {
-        return true;
+function checkInputs() {
+    // console.log(($("#imageForm").files));
+    if (!app.hasModel) {
+        window.alert("Vous devez d'abord charger un modèle");
+        return false;
     }
-    window.alert("Vous devez d'abord charger un modèle");
-    return false;
+
+    if ($("#imageForm")[0].files.length === 0) {
+        window.alert("Vous devez insérer une image");
+        return false;
+
+    }
+    return true;
 }
