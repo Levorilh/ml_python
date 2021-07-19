@@ -69,8 +69,8 @@ def predictImage():
         prediction_score = pred[best_class]
 
         return render_template("index.twig", image=image, modelFiles=MODELS_FILENAMES, modelNames=MODEL_NAMES,
-                               scores=pred, prediction_label=prediction_label, labels=" ".join(classes),
-                               prediction_score=prediction_score)
+                               scores=pred, prediction_label=prediction_label, labels=classes,
+                               prediction_score=round(prediction_score*100, 2))
 
 
 @app.route("/setModel", methods=["POST"])
