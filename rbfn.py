@@ -32,13 +32,13 @@ def train_rbfn_model(model, dataset_inputs, dataset_expected_outputs, naif=True,
     mylib.train_rbfn_model(model, arr_input, samples_count, arr_output, naif, max_iters)
 
 
-def predict_rbfn(model, dataset_inputs):
+def predict_rbfn(model, dataset_inputs, num_classes=2):
     flattened_dataset_inputs = np.array(dataset_inputs).flatten()
     arr, arr_type = as_C_array(flattened_dataset_inputs, c_double)
     mylib.predict_rbfn.argtypes = [c_void_p, arr_type]
     mylib.predict_rbfn.restype = POINTER(c_double)
     predict_value = mylib.predict_rbfn(model, arr)
-    rslt = list(np.ctypeslib.as_array(predict_value, (2,)))
+    rslt = list(np.ctypeslib.as_array(predict_value, (num_classes,)))
     destroy_rbfn_prediction(predict_value)
     return rslt
 
