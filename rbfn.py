@@ -54,9 +54,9 @@ def save_rbf_model(model, path):
     mylib.save_rbf_model(model, bytes(path, 'utf-8'))
 
 def load_rbf_model(path):
-    mylib.save_rbf_model.argtypes = [c_char_p]
-    mylib.save_rbf_model.restype = c_void_p
-    p_model = mylib.save_rbf_model(bytes(path, 'utf-8'))
+    mylib.load_rbf_model.argtypes = [c_char_p]
+    mylib.load_rbf_model.restype = c_void_p
+    p_model = mylib.load_rbf_model(bytes(path, 'utf-8'))
 
     if not p_model:
         print("le modele n'a pas pu être créé")
