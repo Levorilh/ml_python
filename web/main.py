@@ -42,13 +42,16 @@ def predictImage():
     print("bonjour", request)
 
     f = request.files.get("filePath", None)
-    if f is None :
+    if f is None:
         return "arf"
     fs = secure_filename(f.filename)
+
+    IMG_SIZE = (session.get("img_size1"), session.get("img_size2"))
+
     f.save(os.path.join(app.config["UPLOAD_ROOT"], fs))
     image = str(os.path.join(app.config["UPLOAD_URL"], f.filename))
     img = Image.open(image)
-    im_re = img.resize((8, 8))
+    im_re = img.resize(IMG_SIZE)
     a = np.asarray(im_re)
     a_fl = a.flatten() / 255.
 
@@ -79,6 +82,10 @@ def setModel_route():
         session['modelSize'], session['model'] = load_linear_model(dir_models + "lin/" + request.form["file"])
     else:
         session['model'] = load_mlp_model(dir_models + "mlp/" + request.form["file"])
+        fileparts = request.form["file"].split("x")
+        session["img_size1"] = int(fileparts[0][-1])
+        session["img_size2"] = int(fileparts[1][0])
+
     print(session)
 
     return "", 201
