@@ -35,7 +35,7 @@
             <div class="col-sm-4">
                 <h3>Votre image</h3>
                 <form action="/predict" method="POST" enctype="multipart/form-data" onsubmit="return checkInputs()">
-                    <input id="insert" type="file" accept="image/png, image/jpeg, image/jpg , " value="Sélectionner" name="image" class="mb-2">
+                    <input id="insert" type="file" accept="image/png, image/jpeg, image/jpg , " value="Sélectionner" name="filePath" class="mb-2">
                     <img id="preview" src="#" alt="your image" title="preview" class="d-none mt-2" width="350"/>
                     <input id="test" type="submit" value="Process" class="d-none mt-2">
                 </form>

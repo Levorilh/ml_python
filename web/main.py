@@ -37,15 +37,13 @@ def index():
                            modelFiles=MODELS_FILENAMES, modelNames=MODEL_NAMES, scores=None)
 
 
-@app.route("/predictImage", methods=["GET", "POST"])
+@app.route("/predictImage", methods=["POST"])
 def predictImage():
+    print("bonjour", request)
 
-    for k in MODELS_FILENAMES.keys():
-        MODELS_FILENAMES[k] = []
-
-    loadModels(MODELS_FILENAMES)
-
-    f = request.files["filePath"]
+    f = request.files.get("filePath", None)
+    if f is None :
+        return "arf"
     fs = secure_filename(f.filename)
     f.save(os.path.join(app.config["UPLOAD_ROOT"], fs))
     image = str(os.path.join(app.config["UPLOAD_URL"], f.filename))
@@ -59,7 +57,7 @@ def predictImage():
 
         print(pred)
 
-        return render_template("index.twig", image=image, modelFiles=MODELS_FILENAMES, modelNames=MODEL_NAMES,
+        return render_template("prediction.twig", image=image, modelFiles=MODELS_FILENAMES, modelNames=MODEL_NAMES,
                                labels=" ".join(classes), score=None)
 
     else:
@@ -68,9 +66,9 @@ def predictImage():
         prediction_label = classes[best_class]
         prediction_score = pred[best_class]
 
-        return render_template("index.twig", image=image, modelFiles=MODELS_FILENAMES, modelNames=MODEL_NAMES,
+        return render_template("prediction.twig", image=image, modelFiles=MODELS_FILENAMES, modelNames=MODEL_NAMES,
                                scores=pred, prediction_label=prediction_label, labels=classes,
-                               prediction_score=round(prediction_score*100, 2))
+                               prediction_score=round(prediction_score * 100, 2))
 
 
 @app.route("/setModel", methods=["POST"])

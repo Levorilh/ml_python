@@ -1,3 +1,12 @@
-<h3>Output</h3>
-<p> Votre Monument : <strong id="classif">{{ className }}</strong></p>
-<p> accuracy : <strong id="accurary">{{ "%.2f"|format(accuracy) }}</strong> %</p>
+<div class="background_faded_white">
+    <p><strong>Le monument inséré est: {{ prediction_label }}</strong></p>
+    <img src="{{ image }}" height=250px alt="this should render your image">
+    <br>
+    <p><strong>Certitude de prédiction: {{ "%.2f" | format(prediction_score) }}%</strong></p>
+    <p><i>Labels disponibles:</i></p>
+    <ul class="inside_red">
+        {% for label,score in labels|zip(scores) %}
+            <li>{{ label }} : {{ "%.3f"| format(score) }} </li>
+        {% endfor %}
+    </ul>
+</div>

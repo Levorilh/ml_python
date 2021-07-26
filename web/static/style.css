@@ -1,12 +1,37 @@
-.banniere {
-    /*background-color: #D69422;*/
-    border-radius: 0 10% 10% 0;
-    margin-left: 0;
-    height: 300px;
-    box-shadow: black;
-    background-image: linear-gradient(to right, #D69422 35%, rgba(214, 148, 34, 0.3));
+h2#title {
+    text-decoration: underline;
 }
 
-.title {
-    text-decoration: underline black;
+#chooseModel {
+    background-repeat: no-repeat;
+    background-image: url('images/paris_background.png');
+    background-size: cover;
+    height: 900px;
+}
+
+#firstDiv {
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 750px;
+    background-image: url('images/paris_background2.png');
+}
+
+.bigText{
+    width: fit-content;
+    color: #c3ccd9;
+    font-size: 1.6em;
+    background-color: rgba(0,0,0, 0.45);
+}
+
+.background_faded_white{
+    width: fit-content;
+    color: #111315;
+    font-size: 1.1em;
+    background-color: rgba(255,255,255, 0.6);
+}
+
+.inside_red > li{
+    color: #d53232;
+    font-size: 1em;
+    list-style-type: none;
 }
