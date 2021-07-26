@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="row mb-4 pb-4"></div>
+    <div class="row mb-4 pb-4"></div>
+    <div class="row">
+        <div class="col">
+
+            <div class="col-sm-5 text-center d-flex align-items-center" id="FileUpload">
+
+                <form method="post" enctype="multipart/form-data" onsubmit="return false;">
+                    <label>Envoyez votre monument</label>
+
+                    <div class="d-flex align-items-center">
+                        <input class="btn btn-secondary" name="filePath" type="file" accept="image/png, image/jpeg, image/jpg" id="imageForm">
+                    </div>
+                    <img id="preview" src="#" alt="your image" title="preview" class="d-none mt-2" width="350"/>
+
+                    <input class="btn btn-primary" type="submit" value="Submit" id="sendImage">
+                </form>
+            </div>
+        </div>
+        <div class="col">
+
+            <div class="col-sm-5 text-center" id="result"></div>
+        </div>
+    </div>
+</div>
