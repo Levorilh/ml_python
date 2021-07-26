@@ -6,7 +6,7 @@
     <p><i>Labels disponibles:</i></p>
     <ul class="inside_red">
         {% for label,score in labels|zip(scores) %}
-            <li>{{ label }} : {{ score }} </li>
+            <li>{{ label }} : {{ "%.3f"| format(score) }} </li>
         {% endfor %}
     </ul>
 </div>

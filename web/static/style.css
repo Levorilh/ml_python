@@ -32,6 +32,6 @@ h2#title {
 
 .inside_red > li{
     color: #d53232;
-    font-size: 0.8em;
+    font-size: 1em;
     list-style-type: none;
 }
